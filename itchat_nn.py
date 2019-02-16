@@ -1,10 +1,4 @@
 # coding:utf-8
-import re
-import os
-import sys
-import random
-import logging
-import readline
 
 import itchat
 from nn_rule import *
@@ -13,29 +7,6 @@ from itchat.storage import User, Chatroom
 
 pkl_file = 'itchat.pkl'
 games = {}
-
-
-def roll_reply(msg_content, msg_user):
-    match = re.match(r'\.r (\d*)d(\d+)', msg_content)
-    if match:
-        n = match.group(1)
-        m = match.group(2)
-
-        if not n:
-            n = 1
-        n = int(n)
-        m = int(m)
-        if n > 100 or m > 100:
-            msg['User'].send(f'数值超限，不要搞事情')
-            return True
-
-        result = []
-        for i in range(n):
-            result.append(random.randint(1, m))
-        nick_name, contact_name = get_names(msg_user)
-        msg_user.send(f'@{nick_name}: {result} = {sum(result)}')
-        return True
-    return False
 
 
 def get_names(msg):
@@ -57,14 +28,13 @@ def get_names(msg):
             contact_name = chatroom['NickName']
     return nick_name, contact_name
 
+
 @itchat.msg_register(TEXT, isFriendChat=True, isGroupChat=True)
 def text_reply(msg):
     msg_content = msg['Content']
     msg_user = msg['User']
-
     nick_name, contact_name = get_names(msg)
     if isinstance(msg_user, User):
-        print(nick_name, contact_name)
         return
     if isinstance(msg_user, Chatroom):
         if msg_content == '.新建':
@@ -116,5 +86,5 @@ def text_reply(msg):
                 msg_user.send('游戏结束')
 
 
-itchat.auto_login(hotReload=True, enableCmdQR=2, statusStorageDir=pkl_file)
+itchat.auto_login(hotReload=True, enableCmdQR=1, statusStorageDir=pkl_file)
 itchat.run()
