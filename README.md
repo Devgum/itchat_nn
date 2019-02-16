@@ -1,10 +1,16 @@
 # itchat_nn
 春节期间，见到亲戚玩牛牛。遂做了个微信自动回复机器人，可以在微信群里玩牛牛。
 
+## 依赖说明
+
+> python3  
+> itchat  
+> prettytable  
+
 ## 操作说明
 
 运行机器人。使用微信扫码登陆。  
->>python3 itchat_nn.py
+>python itchat_nn.py
 
 
 在机器人所在的群中，发送以下指令进行操作。  
