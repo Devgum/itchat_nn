@@ -1,5 +1,7 @@
 # coding:utf-8
 
+import sys
+
 import itchat
 from nn_rule import *
 from itchat.content import *
@@ -11,7 +13,6 @@ games = {}
 
 def get_names(msg):
     msg_user = msg['User']
-    msg_content = msg['Content']
     if isinstance(msg_user, User):
         nick_name = msg_user['NickName']
         contact_name = nick_name
@@ -85,6 +86,8 @@ def text_reply(msg):
                 del games[contact_name]
                 msg_user.send('游戏结束')
 
-
-itchat.auto_login(hotReload=True, enableCmdQR=1, statusStorageDir=pkl_file)
+cmdQR = 1
+if len(sys.argv) > 1:
+    cmdQR = sys.argv[1]
+itchat.auto_login(hotReload=True, enableCmdQR=cmdQR, statusStorageDir=pkl_file)
 itchat.run()
