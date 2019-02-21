@@ -86,7 +86,7 @@ def text_reply(msg):
                 del games[contact_name]
                 msg_user.send('游戏结束')
 
-cmdQR = 1
+cmdQR = 2
 if len(sys.argv) > 1:
     cmdQR = sys.argv[1]
 itchat.auto_login(hotReload=True, enableCmdQR=cmdQR, statusStorageDir=pkl_file)
