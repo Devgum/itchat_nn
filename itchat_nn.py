@@ -86,6 +86,7 @@ def text_reply(msg):
                 del games[contact_name]
                 msg_user.send('游戏结束')
 
+
 cmdQR = 2
 if len(sys.argv) > 1:
     cmdQR = sys.argv[1]
