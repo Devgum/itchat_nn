@@ -1,6 +1,5 @@
 # coding:utf-8
 
-import time
 from poker_utils import *
 from player import Player
 
