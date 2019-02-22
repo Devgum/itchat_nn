@@ -9,51 +9,56 @@ class NNGame:
     def __init__(self, base_score=10):
         self.pack = create_pack(with_joker=False)
         self.base_score = base_score
-        self.master = 0
-        self.players = []
+        self.master = ''
+        self.players = {}
 
     def player_exists(self, player_name):
-        for player in self.players:
-            if player_name == player.name:
-                return True
-        return False
+        return player_name in self.players
 
     def count_players(self):
         return len(self.players)
 
     def add_player(self, player):
-        self.players.append(player)
+        if not self.master:
+            self.master = player.name
+        self.players[player.name] = player
 
     def del_player(self, player_name):
-        for player in self.players:
-            if player_name == player.name:
-                self.players.remove(player)
+        if player_name in self.players:
+            if self.master == player_name:
+                self.next_master()
+            del self.players[player_name]
+
+    def get_player(self, player_name):
+        if player_name in self.players:
+            return self.players[player_name]
+        raise(f'Player [{player_name}] does not exist.')
 
     def master_player(self):
         return self.players[self.master]
 
     def reset(self):
         self.pack = create_pack(with_joker=False)
-        for player in self.players:
+        for player in self.players.values():
             player.reset()
 
     def display_stat(self):
         result = ''
-        for player_index in range(len(self.players)):
-            player = self.players[player_index]
+        for player_name in self.players:
+            player = self.players[player_name]
             role = ''
-            if self.master == player_index:
+            if self.master == player_name:
                 role = '(庄家)'
             result += f'{player.name}{role}:\n'
             result += f'{player.display_hand()}\n'
         return result
 
     def draw(self):
-        for player in self.players:
+        for player in self.players.values():
             player.draw(self.pack)
 
     def count_nn(self):
-        for player in self.players:
+        for player in self.players.values():
             if len(player.hand) is not 5:
                 print(
                     f'Player [{player.name}]: Hand size [{len(player.hand)}]')
@@ -84,8 +89,10 @@ class NNGame:
         return diff
 
     def next_master(self):
-        self.master += 1
-        self.master %= len(self.players)
+        player_name_list = list(self.players.keys())
+        master_index = player_name_list.index(self.master)
+        new_index = (master_index + 1) % len(player_name_list)
+        self.master = player_name_list[new_index]
 
     def display_nn(self, nn):
         if nn < 0:
@@ -98,11 +105,11 @@ class NNGame:
         result = ''
         master_get = 0
         master = self.players[self.master]
-        for player_index in range(len(self.players)):
-            if player_index == self.master:
+        for player_name in self.players:
+            if player_name == self.master:
                 continue
             diff = self.base_score
-            player = self.players[player_index]
+            player = self.players[player_name]
             if player.nn < master.nn:
                 diff = self.count_winner(master.nn)
             elif player.nn > master.nn:
@@ -115,7 +122,7 @@ class NNGame:
                 else:
                     diff = self.count_winner(master.nn)
             master_get += diff
-            self.players[player_index].score -= diff
+            player.score -= diff
             result += f'{player.name} [{self.display_nn(player.nn)}] 本局: {0-diff}. 当前: {player.score}\n'
         self.players[self.master].score += master_get
         result += f'{master.name}(庄家) [{self.display_nn(master.nn)}] 本局: {master_get}. 当前: {master.score}\n'
