@@ -6,7 +6,7 @@ import itchat
 from nn_rule import *
 from utils import *
 from itchat.content import *
-from itchat.storage import User, Chatroom
+from itchat.storage import User
 
 pkl_file = 'itchat.pkl'
 reply_funcs = []
