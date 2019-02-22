@@ -85,7 +85,7 @@ def enter_game(msg):
             return True
         game = games[contact_name]
         if game.player_exists(nick_name):
-            msg_user.send(f'玩家{nick_name}已经存在，不需要重复报名')
+            msg_user.send(f'玩家[{nick_name}]已经存在，不需要重复报名')
             return True
         player = Player(nick_name)
         game.add_player(player)
