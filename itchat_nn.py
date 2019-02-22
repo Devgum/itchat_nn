@@ -4,10 +4,12 @@ import sys
 
 import itchat
 from nn_rule import *
+from utils import *
 from itchat.content import *
 from itchat.storage import User, Chatroom
 
 pkl_file = 'itchat.pkl'
+reply_funcs = []
 games = {}
 
 
@@ -39,6 +41,7 @@ def get_names(msg):
     return nick_name, contact_name
 
 
+@reply_func(reply_funcs)
 def create_game(msg):
     '''
     监听游戏创建
@@ -65,6 +68,7 @@ def create_game(msg):
     return False
 
 
+@reply_func(reply_funcs)
 def enter_game(msg):
     '''
     监听报名
@@ -90,6 +94,7 @@ def enter_game(msg):
         return True
 
 
+@reply_func(reply_funcs)
 def exit_game(msg):
     '''
     监听退出
@@ -116,6 +121,7 @@ def exit_game(msg):
     return False
 
 
+@reply_func(reply_funcs)
 def run_game(msg):
     '''
     监听开始
@@ -151,6 +157,7 @@ def run_game(msg):
     return False
 
 
+@reply_func(reply_funcs)
 def end_game(msg):
     '''
     监听结束
@@ -171,7 +178,6 @@ def end_game(msg):
 
 @itchat.msg_register(TEXT, isFriendChat=True, isGroupChat=True)
 def text_reply(msg):
-    reply_funcs = [create_game, enter_game, exit_game, run_game, end_game]
     for reply_func in reply_funcs:
         if reply_func(msg):
             return
