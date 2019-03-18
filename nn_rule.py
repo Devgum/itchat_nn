@@ -78,6 +78,9 @@ class NNGame:
                             nn = sum(values) % 10
                             if nn == 0:
                                 nn = 10
+                            break
+                else:
+                    break
             player.nn = nn
 
     def count_winner(self, nn):
