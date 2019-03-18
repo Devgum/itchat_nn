@@ -62,7 +62,7 @@ class NNGame:
             if len(player.hand) is not 5:
                 print(
                     f'Player [{player.name}]: Hand size [{len(player.hand)}]')
-                return -1
+                return
             values = []
             for card in player.hand:
                 value = card.value + 1
@@ -78,6 +78,12 @@ class NNGame:
                             nn = sum(values) % 10
                             if nn == 0:
                                 nn = 10
+                    else:
+                        continue
+                    break
+                else:
+                    continue
+                break
             player.nn = nn
 
     def count_winner(self, nn):
