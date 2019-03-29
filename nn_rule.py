@@ -1,8 +1,7 @@
 # coding:utf-8
 
-from poker_utils import *
 from player import Player
-
+from poker import *
 
 class NNGame:
 

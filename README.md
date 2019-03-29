@@ -5,7 +5,7 @@
 
 * python3  
 * itchat  
-* prettytable  
+* poker-simple
 
 ## 操作说明
 

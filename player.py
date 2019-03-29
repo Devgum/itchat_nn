@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from poker_utils import *
+from poker import *
 
 
 class Player:
